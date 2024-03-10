@@ -28,7 +28,7 @@ public slots:
 
 class StrValidator:public QValidator{//класс компонента проверки кода
 public:
-    StrValidator(QObject *parent):QValidator(parent){}
+    StrValidator(QObject *parent):QValidator(parent){} //метод проверки
     virtual State validate(QString &str,int &pos)const
     {
         return Acceptable;//метод всегда принимает вводимую строку
