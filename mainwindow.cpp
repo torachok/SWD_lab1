@@ -8,7 +8,7 @@ Win::Win(QWidget *parent):QWidget (parent){
     inputLabel = new QLabel("Введите число: ", this); //отображение текста
     inputEdit = new QLineEdit("", this); //редактор однострочного текста (ввод значений)
     StrValidator *v = new StrValidator(inputEdit); //валидатор для проверки корректности вводимых значений
-    inputEdit->setValidator(v); //проверка введенных значений
+    inputEdit->setValidator(v); //установка валидатора для этой строки, теперь она автоматически будет проверяться
     outputLabel = new QLabel("Результат: ", this); //отображение текста
     outputEdit = new QLineEdit("", this); //редактор однострочного текста (для вывода результата)
     nextButton = new QPushButton("Следующее", this); //инициализация кнопки
@@ -19,12 +19,12 @@ Win::Win(QWidget *parent):QWidget (parent){
     vLayout1->addWidget(inputEdit); //добавление виджета для ввода
     vLayout1->addWidget(outputLabel); //добавление виджета отображения текста
     vLayout1->addWidget(outputEdit); //добавление виджета для вывода результата
-    vLayout1->addStretch(); //создание пустой нерастяжимой ячейки
+    vLayout1->addStretch(); //установка расстояния от последнего элемента до конца макета
 
     QVBoxLayout *vLayout2 = new QVBoxLayout(); //класс макета для выстраивания виджетов вертикально
     vLayout2->addWidget(nextButton); //добавление кнопки
     vLayout2->addWidget(exitButton); //добавление кнопки
-    vLayout2->addStretch(); //создание пустой нерастяжимой ячейки
+    vLayout2->addStretch(); //установка расстояние от последнего элемента до конца макета
 
     QHBoxLayout *hLayout = new QHBoxLayout(this); //класс макета для выстраивания виджетов горизонтально
     hLayout->addWidget(frame); //добавление фрейма
@@ -50,10 +50,10 @@ void Win::begin(){ //функция начала программы
 
 void Win::calc(){ //функция расчета
     bool Ok = true; //начальное значение
-    float r,a; //инициализация переменных
+    float r,a; //инициализация переменных, r - квадрат, a - преобразованная строка в число
     QString str = inputEdit->text(); //ввод значений в соответствующую ячейку
     a = str.toDouble(&Ok); //преобразование в число, если ввели число, то ok = true
-    if(Ok){ //если введенное значение - число, то цикл запускается
+    if(Ok){ //если введенное значение - число, то идем по условию
         r = a*a;  //квадрат
         str.setNum(r); //строку в число переводит
         outputEdit->setText(str); //вывод результата
