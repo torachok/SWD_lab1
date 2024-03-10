@@ -4,9 +4,8 @@
 
 class Window:public QWidget{
 protected:
-    QTextCodec *codec;
     Area *area; //область отображения рисунка
-    QPushButton *btn;
+    QPushButton *btn; //кнопка
 public:
     Window();
 };
