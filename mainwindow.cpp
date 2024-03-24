@@ -32,9 +32,9 @@ Win::Win(QWidget *parent):QWidget (parent){
 
     begin(); //запуск программы
 
-    connect(exitButton, SIGNAL(clicked(bool)), this, SLOT(close())); //закрытие при нажатии на кнопку "выход"
-    connect(nextButton, SIGNAL(clicked(bool)), this, SLOT(begin())); //перезапуск программы при нажатии на кнопку "следующее"
-    connect(inputEdit, SIGNAL(returnPressed()), this, SLOT(calc())); //расчет по введенному после нажатия на enter
+    connect(exitButton, &QPushButton::clicked, this, &Win::close); //закрытие при нажатии на кнопку "выход"
+    connect(nextButton, &QPushButton::clicked, this, &Win::begin); //перезапуск программы при нажатии на кнопку "следующее"
+    connect(inputEdit, &QLineEdit::returnPressed, this, &Win::calc); //расчет по введенному после нажатия на enter
 }
 
 void Win::begin(){ //функция начала программы
@@ -53,8 +53,19 @@ void Win::calc(){ //функция расчета
     float r,a; //инициализация переменных, r - квадрат, a - преобразованная строка в число
     QString str = inputEdit->text(); //ввод значений в соответствующую ячейку
     a = str.toDouble(&Ok); //преобразование в число, если ввели число, то ok = true
-    if(Ok){ //если введенное значение - число, то идем по условию
+    if(Ok && std::isfinite(a)){ //если введенное значение - число, то идем по условию
         r = a*a;  //квадрат
+        if(!std::isfinite(r)){
+            auto msg = QMessageBox(
+                QMessageBox::Critical,
+                "Ошибка!",
+                "Тип float переполнился",
+                QMessageBox::Ok
+                );
+            msg.exec();
+            begin(); //перенастройка окна программы
+            return; //окончание работы calc
+        }
         str.setNum(r); //строку в число переводит
         outputEdit->setText(str); //вывод результата
         inputEdit->setEnabled(false); //недоступна ячейка ввода

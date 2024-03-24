@@ -8,6 +8,7 @@
 #include <QValidator>
 #include <QMessageBox>
 #include <QVBoxLayout>
+#include <cmath>
 
 class Win:public QWidget{ //класс окна
     Q_OBJECT //макрос Qt, обеспечивающий коррекное создание сигналов и слотов
