@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QMessageBox>
+#include <limits>
 
 class Counter:public QLineEdit{
     Q_OBJECT //макрос Qt, обеспечивающий коррекное создание сигналов и слотов
@@ -19,8 +21,21 @@ public slots:
     void add_one(){ //добавление +1 к значению
         QString str = text(); //инициализация строки
         int r = str.toInt(); //преобразование строки в число
-        if(r!=0 && (r+1)%5 == 0) emit tick_signal(); //если число != 0 и делится на 5 без остатка, запускаем имитацию сигнала
         r++; //прибвление к счетчику 1
+
+        if(r == std::numeric_limits<int>::max()){ //проверка на переполение типа данных
+            auto msg = QMessageBox(
+                QMessageBox::Information,
+                "Счетчики",
+                "Число переполнило тип данных, будет сброшено в 0",
+                QMessageBox::Ok
+                );
+            msg.exec();
+            r=0;
+        }
+
+        if(r!=0 && (r+1)%5 == 0) emit tick_signal(); //если число != 0 и делится на 5 без остатка, запускаем имитацию сигнала
+
         str.setNum(r); //преобразование строки в число
         setText(str); //установка в поле увелиения числа
     }
